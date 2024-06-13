@@ -1,0 +1,426 @@
+/* Positions the element relative to the nearest positioned ancestor (an ancestor with relative, absolute, or fixed positioning) or the initial containing block (if no positioned ancestors exist).*/
+
+*{
+  margin:0; /*to remove the default padding and margins*/
+  padding:0;
+  box-sizing:border-box;
+  font-family:consolas;
+}
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background:#355463;
+  overflow:hidden;
+  /*to control content that overflows the boundaries of its container
+   and hidden will make  sure that overflow content is clipped,
+   and no scrollbars are provided to view the hidden content.*/
+}
+.road{
+  /*position:relative;*/
+  width:100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d; /* To keep child elements in 3D space */
+  transform: rotate(-15deg);
+}
+.road::after{ 
+  /*Pseudo-element: :before:used to insert content before the content of the element it's applied to.
+   Content: content:'';sets the content to an empty string,which is necessary for the: :before pseudo-element to display.*/
+  content:'';
+  /*position:absolute;*/
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg,#fff,#fff 50%,transparent 50%,transparent 100%);/*This creates a dashed effect. 90deg=to right,starting pt,white,transparent,ending pt*/
+  background-size:50px;
+  animation-name: animate_road;
+  animation-duration: 0.125s;
+  animation-timing-function: linear;/*Same speed from starting to end*/
+  animation-iteration-count: infinite;
+}
+@keyframes animate_road {
+  0% {
+    background-position: 50px 0;
+  }
+
+  100% {
+    background-position: 0px 0;
+  }
+}
+.police{
+  position:absolute; /*position relative to the road-class if road has position:relative and not if position:absolute to top-left corner of document*/
+  left:-80px;
+  width:200px;
+  height:80px;
+  background:#3f4c54;
+  border-radius:10px;
+  box-shadow:-10px 10px rgba(0,0,0,0.05);/*horizontal-offset & vertical-offset rgbapha--faint shadow  -val-left side(h-offset) and above(v-offset)*/
+  transform-style: preserve-3d;/* To keep child elements in 3D space */
+  perspective: 800px;/* Creates a visual depth for the 3D effect */
+  z-index:10;/*The z-index property in CSS only works on elements that have a position value other than static. The valid position values for z-index to work are relative, absolute, fixed, and sticky.*/
+  animation: animate_police_car 5s linear infinite;
+}
+.police:nth-child(2){
+  left:300px;
+  animation-delay:-2.5s;
+}
+@keyframes animate_police_car{
+  0%{
+    transform:translateX(20px) translateY(-50px);
+  }
+  25% {
+    transform: translateX(-10px) translateY(0px);
+    }
+  50% {
+     transform: translateX(20px) translateY(50px);
+     }
+  75% {
+     transform: translateX(-10px) translateY(0px);
+    }
+  100% {
+    transform: translateX(20px) translateY(-50px);
+   }
+}
+.police::before{ /*pseudo element :before to back side*/
+  content:'';
+  position:absolute;/*positioned relative to position:absolute of police(nearest ancestor element)*/
+  top:12px;
+  left:2px;
+  width:5px;
+  height:15px;
+  border-radius:2px;
+  background:#fc3c25;
+  box-shadow:0 42px #fc3c25; /*we have use box-shadow to replicate the red-light below*/ 
+}
+.police::after{/*pseudo element :after to front side*/
+    content: '';
+    position:absolute;/*positioned relative to position: absolute of police(nearest ancestor element)*/
+    top: 12px;
+    right: 2px;
+    width: 6px;
+    height: 16px;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: 0 42px #fff;/*horizontal-offset vertical-offset blur-radius spread-radius color */
+}
+.police span{ 
+  position:absolute;
+  inset:5px 10px;/*Set-the-distance-to-the-parent-element(police)-from-the-positioned-<DIV>-or-<span>-element(T,B and L,R)*/
+  background:#475b66;
+  border-radius:10px;
+  overflow:hidden;
+}
+.police span::before{/*span ka before-911*/
+  content: '911';
+  position:absolute;/*positioned relative to position: absolute of police(nearest ancestor element)*/
+  top:50%;
+  left:48%;
+  transform:translate(-50%,-50%) rotate(90deg);/*translate(x-towards right (- sign towards left),y towards down(- sign towards up)*/
+  color:#333;
+  font-size:1.15em;
+  font-weight:1000;
+  letter-spacing: 0.1em;
+  z-index:10;
+}
+.police span::after{/*span ka after-three colrs*/
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);/*x and y coordinates for positions*/
+  z-index:100;
+  width:6px;
+  height:10px;
+  background:#29282b;
+  box-shadow:0 -10px #1f5fff,0 10px #df1b25;/*used box-shadow for blue and red*/
+}
+.police span b{
+  position:absolute;
+  inset:0 30px; /*Car-glass*/
+  background:#344650;
+  border-radius:10px;
+}
+.police span b::after{/*Car-roof*/
+  content:'';
+  position:absolute;
+  inset:6px 25px; /*Set the distance to the parent element(police) from the positioned <DIV>or <span> element (T,B and L,R)*/
+  background: #ebebeb;
+  border:5px; 
+}
+.police span b::before{ 
+  /*after or before change krlo no dikkat*/
+  content:'';
+  position: absolute;
+  inset:0 58px;
+  background:#ebebeb;
+}
+.police span i::before{
+  content:'';
+  position: absolute;
+  top:7px;
+  left:0px;
+  width:30px;
+  height:3px;
+  background:#ebebeb;
+  transform-origin:right;/*This property must be used together with the transform property
+  transform-origin: x-axis y-axis z-axis|initial|inherit;to position the transformed element
+  (left center right length %).*/
+  transform:rotate(15deg);
+  box-shadow:100px 34px #ebebeb;
+}
+.police span i::after {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  left: 0px;
+  width: 30px;
+  height: 3px;
+  background: #ebebeb;
+  transform-origin: right;
+  transform: rotate(-15deg);
+  box-shadow: 100px -34px #ebebeb;
+}
+.light_beam {/*black box of light beam*/
+  position: absolute;
+  top: 5px;
+  right: -2px;
+  width: 10px;
+  height: 70px;
+  background: #0008;
+  border-radius: 15px;
+  transform-style: preserve-3d;
+  z-index: 5;
+}
+
+.light_beam::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 150px;
+  height: 16px;
+  background: linear-gradient(90deg, #fffc, transparent);
+  transform-origin: left;
+  transform: perspective(500px) rotateY(-50deg);
+}
+
+.light_beam::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 150px;
+  height: 16px;
+  background: linear-gradient(90deg, #fffc, transparent);
+  transform-origin: left;
+  transform: perspective(500px) rotateY(-50deg);
+}
+.police h4{
+  position:absolute;
+  top:50%;
+  left:10%;
+  color:#fff;
+  text-transform:uppercase;
+  z-index:10;
+  transform:translateY(-50%) rotate(90deg) scale(0.75);/*length %*/
+}
+.police .side-mirrors{
+position:absolute;
+inset:0;
+}
+.police .side-mirrors::before{
+  content:'';
+  position:absolute;
+  top:-8px;
+  right:40px;
+  width:5px;
+  height:10px;
+  background:#ebebeb;
+  border-top-right-radius: 10px;
+}
+.police .side-mirrors::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 40px;
+  width: 5px;
+  height: 10px;
+  background: #ebebeb;
+  border-bottom-right-radius: 10px;
+}
+
+.taxi {
+  position: absolute;
+  /*positioned relative to the police-class if road has position:relative and not if position:absolute to top-left corner of document*/
+  right: 50px;
+  width: 200px;
+  height: 80px;
+  background: #f4b503;
+  border-radius: 10px;
+  box-shadow: -10px 10px rgba(0, 0, 0, 0.1);
+  /*horizontal-offset & vertical-offset rgbapha--faint shadow  -val-left side(h-offset) and above(v-offset)*/
+  transform-style: preserve-3d;
+  /* To keep child elements in 3D space */
+  perspective: 800px;
+  /* Creates a visual depth for the 3D effect */
+  z-index: 10;
+  /*The z-index property in CSS only works on elements that have a position value other than static. The valid position values for z-index to work are relative, absolute, fixed, and sticky.*/
+  animation: animate_taxi 5s -5s linear infinite;
+}
+@keyframes animate_taxi{
+  0% {
+    transform: translateX(20px) translateY(20px);
+  }
+
+  25% {
+    transform: translateX(-50px) translateY(0px);
+  }
+
+  50% {
+    transform: translateX(-20px) translateY(50px);
+  }
+
+  75% {
+    transform: translateX(50px) translateY(0px);
+  }
+
+  100% {
+    transform: translateX(20px) translateY(20px);
+  }
+}
+.taxi::before {
+  /*pseudo element :before to back side*/
+  content: '';
+  position: absolute;
+  /*positioned relative to position:absolute of taxi(nearest ancestor element)*/
+  top: 12px;
+  left: 2px;
+  width: 5px;
+  height: 15px;
+  border-radius: 2px;
+  background: #fc3c25;
+  box-shadow: 0 42px #fc3c25;
+  /*we have use box-shadow to replicate the red-light below*/
+}
+
+.taxi::after {
+  /*pseudo element :after to front side*/
+  content: '';
+  position: absolute;
+  /*positioned relative to position: absolute of taxi(nearest ancestor element)*/
+  top: 12px;
+  right: 2px;
+  width: 6px;
+  height: 16px;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 42px #fff;
+  /*horizontal-offset vertical-offset blur-radius spread-radius color */
+}
+.taxi span{
+  position: absolute;
+    inset: 5px 10px;
+    /*Set-the-distance-to-the-parent-element(police)-from-the-positioned-<DIV>-or-<span>-element(T,B and L,R)*/
+    background: #fdd206;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.taxi span::before{
+  content:'Taxi';
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(90deg);
+  background:#fff;
+  padding:2px;
+  font-size:0.75em;
+  font-weight:1000;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  border-radius:2px;
+  box-shadow:0 0 0 1px #0005;
+  z-index:1000;
+}
+.taxi span b {
+  position: absolute;
+  inset: 0 30px;
+  /*Car-glass*/
+  background: #344650;
+  border-radius: 10px;
+}
+
+.taxi span b::after {
+  /*Car-roof*/
+  content: '';
+  position: absolute;
+  inset: 6px 25px;
+  /*Set the distance to the parent element(police) from the positioned <DIV>or <span> element (T,B and L,R)*/
+  background: #fdd206;
+  border: 5px;
+}
+
+.taxi span b::before {
+  /*after or before change krlo no dikkat*/
+  content: '';
+  position: absolute;
+  inset: 0 58px;
+  background: #fdd206;
+}
+
+.taxi span i::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 0px;
+  width: 30px;
+  height: 3px;
+  background: #fdd206;
+  transform-origin: right;
+  /*This property must be used together with the transform property
+  transform-origin: x-axis y-axis z-axis|initial|inherit;to position the transformed element
+  (left center right length %).*/
+  transform: rotate(15deg);
+  box-shadow: 100px 34px #fdd206;
+}
+.taxi span i::after {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  left: 0px;
+  width: 30px;
+  height: 3px;
+  background: #fdd206;
+  transform-origin: right;
+  transform: rotate(-15deg);
+  box-shadow: 100px -34px #fdd206;
+}
+
+.taxi .side-mirrors {
+  position: absolute;
+  inset: 0;
+}
+
+.taxi .side-mirrors::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 40px;
+  width: 5px;
+  height: 10px;
+  background: #f4b503;
+  border-top-right-radius: 10px;
+}
+
+.taxi .side-mirrors::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 40px;
+  width: 5px;
+  height: 10px;
+  background: #f4b503;
+  border-bottom-right-radius: 10px;
+}
+
